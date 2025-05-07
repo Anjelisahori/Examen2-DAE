@@ -131,3 +131,9 @@ import os
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+import dj_database_url
+import os
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get("postgresql://admin:vpe3jCxDxEC6YlYjbY9CnzqVxynBnjSu@dpg-d0drh2vdiees73a7patg-a.oregon-postgres.render.com/examen2_db"))
+}

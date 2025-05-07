@@ -8,4 +8,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: letras_api.settings  # 🧠 Mismo nombre que el proyecto
       - key: PYTHON_VERSION
-        value: 3.11
+        value: 3.11.1  # Usa una versión completa, por ejemplo 3.11.1
