@@ -1,17 +1,18 @@
 from pathlib import Path
 import os
+import dj_database_url
 
 # BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY segura usando variable de entorno
+# SECRET_KEY desde variable de entorno (no reveles esta clave en producción)
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave-insegura-solo-para-dev')
 
 # Modo producción
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
@@ -59,12 +60,12 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'letras_api.wsgi.application'
 
-# Base de datos
+# Base de datos usando dj-database-url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
 
 # Validadores de contraseña
@@ -93,3 +94,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'JSON_INDENT': 4,
 }
+
+# Seguridad para producción
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+X_FRAME_OPTIONS = 'DENY'
