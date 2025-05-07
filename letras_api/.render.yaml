@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: letras-emociones-api  # ⭐ Este es un nombre que TÚ eliges
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn letras_api.wsgi"  # 🧠 letras_api es el nombre de tu proyecto (donde está settings.py)
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: letras_api.settings  # 🧠 Mismo nombre que el proyecto
+      - key: PYTHON_VERSION
+        value: 3.11
